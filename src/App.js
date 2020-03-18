@@ -9,10 +9,12 @@ class App extends Component {
       super(props);
 
       this.state = { 
-        monsters: []
+        monsters: [],
+        searchField: ''
       };
 
       // this.clickHandler = this.clickHandler.bind(this);
+      this.searchInputChange = this.searchInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -29,10 +31,18 @@ class App extends Component {
   //     });
   // }
 
+  searchInputChange({target}) {
+      console.log(target.value);
+      this.setState({
+        searchField: target.value
+      })
+  }
+
   render() {
       return (
         <div className="App">
-          <CardList monsters={this.state.monsters} />
+          <input type='search' placeholder='search monsters' onChange={this.searchInputChange} />
+          <CardList monsters={this.state.monsters.filter(monster => monster.name.toLowerCase().includes(this.state.searchField))} />
         </div>
       );
   }
