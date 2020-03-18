@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import './App.css';
 
 import {CardList} from './components/card-list/card-list.component';
+import {SearchBox} from './components/search-box/search-box.component';
 
-class App extends Component {
+class App extends Component { 
 
   constructor(props) {
       super(props);
@@ -11,10 +12,9 @@ class App extends Component {
       this.state = { 
         monsters: [],
         searchField: ''
-      };
+      }; 
 
       // this.clickHandler = this.clickHandler.bind(this);
-      this.searchInputChange = this.searchInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -31,18 +31,21 @@ class App extends Component {
   //     });
   // }
 
-  searchInputChange({target}) {
-      console.log(target.value);
+  searchInputChange = ({target}) => {
       this.setState({
         searchField: target.value
-      })
+      });
   }
 
   render() {
+      const {monsters, searchField} = this.state;
+      const filteredMonsters = monsters.filter(({name}) => name.toLowerCase().includes(searchField.toLowerCase()));
+
       return (
         <div className="App">
-          <input type='search' placeholder='search monsters' onChange={this.searchInputChange} />
-          <CardList monsters={this.state.monsters.filter(monster => monster.name.toLowerCase().includes(this.state.searchField))} />
+          <h1>Monster Rolodex</h1>
+          <SearchBox placeholder='search monsters' handleChange={this.searchInputChange}/>
+          <CardList monsters={filteredMonsters} />
         </div>
       );
   }
